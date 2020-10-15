@@ -2,10 +2,6 @@ import torch
 import numpy as np
 import torch.nn.modules.linear as linear
 
-classes = ('Crossing', 'EndSpeedLimit', 'FinishLine', 'LeftTurn',
-           'RightTurn', 'StartSpeedLimit', 'Straight')
-
-
 # --------------------------------------------------------------------
 # this code should quantize any classification network
 # the only restriction is to load a dataset and create classes attribute
@@ -73,7 +69,7 @@ def __quantize_bias(net):
 # Quantize activations (inter-layer data) to 8 bits (QM.N)
 # Using min and max of activations as nearest power of 2
 # By iterating trough the entire test dataset
-def __quantize_activation(net, validationSet):
+def __quantize_activation(net, validationSet, classes):
     print('\nActivation')
     validationloader = torch.utils.data.DataLoader(validationSet,
                                                    batch_size=1,
@@ -207,6 +203,7 @@ def __quantize_activation(net, validationSet):
     nb_image_correct = 0
 
     # iterating trough the entire test dataset
+    #'''
     for data in validationloader:
         # get the input and output
         images, labels = data
@@ -265,6 +262,7 @@ def __quantize_activation(net, validationSet):
 
     # print accuracy for network
     print("%s accuracy after activation quantization : %.2f" % (net.name(), nb_image_correct * 100 / nb_image_total))
+    #'''
 
 
 # in CMSIS-NN, all the weight, bias and activation data are stored in fixed point but are computed with floating point
@@ -296,7 +294,7 @@ def __quantize_shift(net):
             net.out_rshift = getattr(net, named_children[0]).act_rshift
 
 
-def quantize(net, validationSet):
+def quantize(net, validationSet, classes):
     # Set the model to test mode
     # To deactivate dropout during quantization
     net.eval()
@@ -306,5 +304,5 @@ def quantize(net, validationSet):
 
     __quantize_wt(net)
     __quantize_bias(net)
-    __quantize_activation(net, validationSet)
+    __quantize_activation(net, validationSet, classes)
     __quantize_shift(net)

@@ -1,10 +1,7 @@
 import torch
 
-classes = ('Crossing', 'EndSpeedLimit', 'FinishLine', 'LeftTurn',
-           'RightTurn', 'StartSpeedLimit', 'Straight')
 
-
-def test_net(net, testSet):
+def test_net(net, testSet, classes):
     testloader = torch.utils.data.DataLoader(testSet,
                                              batch_size=1,
                                              shuffle=True,

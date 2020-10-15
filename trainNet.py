@@ -2,11 +2,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-classes = ('Crossing', 'EndSpeedLimit', 'FinishLine', 'LeftTurn',
-           'RightTurn', 'StartSpeedLimit', 'Straight')
 
-
-def train_net(net, loop, trainSet):
+def train_net(net, loop, trainSet, classes):
     trainloader = torch.utils.data.DataLoader(trainSet,
                                                       batch_size=128,
                                                       shuffle=True,
