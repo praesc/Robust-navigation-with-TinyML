@@ -47,18 +47,19 @@ def run_net(net, epoch, trainSet, testSet, folder):
     classes = tuple(sorted(classes_test))
 
     # Check if checkpoint exists
-    if not os.path.exists(folder + 'Checkpoint'):
-        os.makedirs(folder + 'Checkpoint')
+    out_dir = os.path.join('checkpoint', folder)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
 
     # Start training
-    path = folder + 'Checkpoint/' + net.name() + '.pt'
-    net = torch.load(path) if os.path.exists(path) else net
+    model_path = os.path.join(out_dir, net.name() + '.pt')
+    net = torch.load(model_path) if os.path.exists(model_path) else net
     train_net(net, epoch, trainSet, classes)
-    torch.save(net, path)
+    torch.save(net, model_path)
     test_net(net, testSet, classes)
     quantize(net, testSet, classes)
     gen_code(net, folder)
 
 
-cnn = CNN3()
+cnn = CNN4()
 run_net(cnn, 1000, trainset, testset, 'Dset-2.0')

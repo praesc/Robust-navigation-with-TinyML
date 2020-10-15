@@ -1,0 +1,3 @@
+#include "SVM_params.h"
+float support_vectors[WEIGTH_DIM][N_FEATURE] = { { -0.0928374758112539, 0.006324489565289198, 0.02558431344759037 } };
+float bias[WEIGTH_DIM] = { 0.006380583853717811};

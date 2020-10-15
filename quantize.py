@@ -118,6 +118,8 @@ def __quantize_activation(net, validationSet, classes):
         # quantize layer by layer
         # basically forward function of the network but layer by layer
         for named_children in net.named_children():
+            #if named_children[0] == 'conv2':
+            #    inputs = torch.reshape(inputs_pre, (1,4,1,45))
 
             # get the layer input shape and size (always the same through the dataset)
             getattr(net, named_children[0]).input_shape = inputs.shape
@@ -151,6 +153,7 @@ def __quantize_activation(net, validationSet, classes):
                     getattr(net, named_children[0]).min_out_val = outputs.min().item()
 
             # output of this layer is now input of the next layer
+            #inputs_pre = inputs.clone()
             inputs = outputs
 
         # get the net output shape and size (always the same through the dataset)
@@ -224,6 +227,8 @@ def __quantize_activation(net, validationSet, classes):
         # quantize layer by layer
         # basically forward function of the network but layer by layer
         for named_children in net.named_children():
+            #if named_children[0] == 'conv2':
+            #    inputs = torch.reshape(inputs_pre, (1,4,1,45))
             # flatten function if next layer is linear
             if isinstance(getattr(net, named_children[0]), linear.Linear) and len(list(inputs.shape)) > 2:
                 inputs = inputs.flatten()
@@ -242,6 +247,7 @@ def __quantize_activation(net, validationSet, classes):
                 outputs = torch.nn.Parameter(quant_outputs / (2 ** getattr(net, named_children[0]).out_dec_bits))
 
             # output of this layer is now input of the next layer
+            #inputs_pre = inputs.clone()
             inputs = outputs
 
         # count total true

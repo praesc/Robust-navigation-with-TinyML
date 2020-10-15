@@ -1,0 +1,6 @@
+[submodule "predictor/Micro-LM"]
+	path = predictor/Micro-LM
+	url = https://github.com/praesc/Micro-LM.git
+[submodule "predictor/Desk-LM"]
+	path = predictor/Desk-LM
+	url = https://github.com/praesc/Desk-LM.git
